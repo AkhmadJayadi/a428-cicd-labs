@@ -21,17 +21,14 @@ pipeline {
         }
 		stage('Manual Approval') {
 	        input {
-	            message 'Please select environment'
+	            message 'Lanjutkan ke tahap Deploy?'
 	            id 'envId'
 	            ok 'Submit'
 	            submitterParameter 'approverId'
-	            parameters {
-					choice choices: ['Prod', 'Pre-Prod'], name: 'envType'
-	            }
 	        }
 
 	        steps {
-	            echo "Deployment approved to ${envType} by ${approverId}."
+	            echo "Deployment approved."
 	        }
 	    }
         stage('Deliver') {
