@@ -1,0 +1,203 @@
+Started by user admin
+Obtained Jenkinsfile from git /home/Documents/Dicoding/a428-cicd-labs
+[Pipeline] Start of Pipeline
+[Pipeline] node
+Running on Jenkins in /var/jenkins_home/workspace/submission-cicd-pipeline-AkhmadJayadi
+[Pipeline] {
+[Pipeline] stage
+[Pipeline] { (Declarative: Checkout SCM)
+[Pipeline] checkout
+Selected Git installation does not exist. Using Default
+The recommended git tool is: NONE
+No credentials specified
+ > git rev-parse --resolve-git-dir /var/jenkins_home/workspace/submission-cicd-pipeline-AkhmadJayadi/.git # timeout=10
+Fetching changes from the remote Git repository
+ > git config remote.origin.url /home/Documents/Dicoding/a428-cicd-labs # timeout=10
+Fetching upstream changes from /home/Documents/Dicoding/a428-cicd-labs
+ > git --version # timeout=10
+ > git --version # 'git version 2.30.2'
+ > git fetch --tags --force --progress -- /home/Documents/Dicoding/a428-cicd-labs +refs/heads/*:refs/remotes/origin/* # timeout=10
+ > git rev-parse refs/remotes/origin/react-app^{commit} # timeout=10
+Checking out Revision 3c8ad6305c7e8650647230c545f150cf9c97c69b (refs/remotes/origin/react-app)
+ > git config core.sparsecheckout # timeout=10
+ > git checkout -f 3c8ad6305c7e8650647230c545f150cf9c97c69b # timeout=10
+Commit message: "Add Manual Approval 3"
+ > git rev-list --no-walk f8abcb04c9dd1c4144282e4537aec99e639c4f04 # timeout=10
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] withEnv
+[Pipeline] {
+[Pipeline] isUnix
+[Pipeline] withEnv
+[Pipeline] {
+[Pipeline] sh
++ docker inspect -f . node:16-buster-slim
+.
+[Pipeline] }
+[Pipeline] // withEnv
+[Pipeline] withDockerContainer
+Jenkins seems to be running inside container 97edb2a050c08d73a16eabfd13a4ab1cd1450814686fef0452a099e950b93ef4
+but /var/jenkins_home/workspace/submission-cicd-pipeline-AkhmadJayadi could not be found among []
+but /var/jenkins_home/workspace/submission-cicd-pipeline-AkhmadJayadi@tmp could not be found among []
+$ docker run -t -d -u 1000:1000 -p 3000:3000 -w /var/jenkins_home/workspace/submission-cicd-pipeline-AkhmadJayadi -v /var/jenkins_home/workspace/submission-cicd-pipeline-AkhmadJayadi:/var/jenkins_home/workspace/submission-cicd-pipeline-AkhmadJayadi:rw,z -v /var/jenkins_home/workspace/submission-cicd-pipeline-AkhmadJayadi@tmp:/var/jenkins_home/workspace/submission-cicd-pipeline-AkhmadJayadi@tmp:rw,z -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** -e ******** node:16-buster-slim cat
+$ docker top f8e4d4cac39531b7519e1bd3b407f6a1cd77184f7a626cf83501321f55c61b82 -eo pid,comm
+[Pipeline] {
+[Pipeline] stage
+[Pipeline] { (Build)
+[Pipeline] sh
++ npm install
+
+up to date, audited 1915 packages in 1m
+
+186 packages are looking for funding
+  run `npm fund` for details
+
+107 vulnerabilities (1 low, 80 moderate, 17 high, 9 critical)
+
+To address issues that do not require attention, run:
+  npm audit fix
+
+To address all issues (including breaking changes), run:
+  npm audit fix --force
+
+Run `npm audit` for details.
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] stage
+[Pipeline] { (Test)
+[Pipeline] sh
++ ./jenkins/scripts/test.sh
+The following "npm" command (if executed) installs the "cross-env"
+dependency into the local "node_modules" directory, which will ultimately
+be stored in the Jenkins home directory. As described in
+https://docs.npmjs.com/cli/install, the "--save-dev" flag causes the
+"cross-env" dependency to be installed as "devDependencies". For the
+purposes of this tutorial, this flag is not important. However, when
+installing this dependency, it would typically be done so using this
+flag. For a comprehensive explanation about "devDependencies", see
+https://stackoverflow.com/questions/18875674/whats-the-difference-between-dependencies-devdependencies-and-peerdependencies.
++ set +x
+The following "npm" command tests that your simple Node.js/React
+application renders satisfactorily. This command actually invokes the test
+runner Jest (https://facebook.github.io/jest/).
++ npm test
+
+> my-app@0.1.0 test
+> react-scripts test --env=jsdom
+
+PASS src/App.test.js (7.341 s)
+  ✓ renders without crashing (91 ms)
+
+Test Suites: 1 passed, 1 total
+Tests:       1 passed, 1 total
+Snapshots:   0 total
+Time:        12.385 s
+Ran all test suites.
+Jest did not exit one second after the test run has completed.
+
+This usually means that there are asynchronous operations that weren't stopped in your tests. Consider running Jest with `--detectOpenHandles` to troubleshoot this issue.
+[0;33mOne of your dependencies, babel-preset-react-app, is importing the
+"@babel/plugin-proposal-private-property-in-object" package without
+declaring it in its dependencies. This is currently working because
+"@babel/plugin-proposal-private-property-in-object" is already in your
+node_modules folder for unrelated reasons, but it [1mmay break at any time[0;33m.
+
+babel-preset-react-app is part of the create-react-app project, [1mwhich
+is not maintianed anymore[0;33m. It is thus unlikely that this bug will
+ever be fixed. Add "@babel/plugin-proposal-private-property-in-object" to
+your devDependencies to work around this error. This will make this message
+go away.[0m
+  
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] stage
+[Pipeline] { (Manual Approval)
+[Pipeline] input
+Input requested
+Approved by admin
+[Pipeline] withEnv
+[Pipeline] {
+[Pipeline] echo
+Deployment approved.
+[Pipeline] }
+[Pipeline] // withEnv
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] stage
+[Pipeline] { (Deploy)
+[Pipeline] sh
++ ./jenkins/scripts/deliver.sh
+The following "npm" command builds your Node.js/React application for
+production in the local "build" directory (i.e. within the
+"/var/jenkins_home/workspace/simple-node-js-react-app" directory),
+correctly bundles React in production mode and optimizes the build for
+the best performance.
++ npm run build
+
+> my-app@0.1.0 build
+> react-scripts build
+
+
+Creating an optimized production build...
+Compiled successfully.
+
+File sizes after gzip:
+
+  42.04 KB  build/static/js/2.eddfa02b.chunk.js
+  1.01 KB   build/static/js/main.54ccdf8a.chunk.js
+  772 B     build/static/js/runtime-main.c2077527.js
+  302 B     build/static/css/main.eeeddbdb.chunk.css
+
+The project was built assuming it is hosted at /.
+You can control this with the homepage field in your package.json.
+
+The build folder is ready to be deployed.
+You may serve it with a static server:
+
+  npm install -g serve
+  serve -s build
+
+Find out more about deployment here:
+
+  https://cra.link/deployment
+
++ set +x
+The following "npm" command runs your Node.js/React application in
+development mode and makes the application available for web browsing.
+The "npm start" command has a trailing ampersand so that the command runs
+as a background process (i.e. asynchronously). Otherwise, this command
+can pause running builds of CI/CD applications indefinitely. "npm start"
+is followed by another command that retrieves the process ID (PID) value
+of the previously run process (i.e. "npm start") and writes this value to
+the file ".pidfile".
++ sleep 1
++ npm start
++ echo 256
++ set +x
+Now...
+Visit http://localhost:3000 to see your Node.js/React application in action.
+(This is why you specified the "args -p 3000:3000" parameter when you
+created your initial Pipeline as a Jenkinsfile.)
+[Pipeline] input
+Sudah selesai menggunakan React App? (Klik "Proceed" untuk mengakhiri)
+Proceed or Abort
+Approved by admin
+[Pipeline] sh
++ ./jenkins/scripts/kill.sh
+The following command terminates the "npm start" process using its PID
+(written to ".pidfile"), all of which were conducted when "deliver.sh"
+was executed.
++ cat .pidfile
++ kill 256
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] }
+$ docker stop --time=1 f8e4d4cac39531b7519e1bd3b407f6a1cd77184f7a626cf83501321f55c61b82
+$ docker rm -f f8e4d4cac39531b7519e1bd3b407f6a1cd77184f7a626cf83501321f55c61b82
+[Pipeline] // withDockerContainer
+[Pipeline] }
+[Pipeline] // withEnv
+[Pipeline] }
+[Pipeline] // node
+[Pipeline] End of Pipeline
+Finished: SUCCESS
