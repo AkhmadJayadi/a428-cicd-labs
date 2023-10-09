@@ -29,8 +29,8 @@ pipeline {
 
 	        steps {
 	            echo "Deployment approved to ${envType} by ${approverId}."
-	            }
 	        }
+	    }
 		stage('Deploy') {
             steps {
                 sh './jenkins/scripts/deliver.sh'
